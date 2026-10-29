@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сверка договоров поставки</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Сверка условий договоров поставки</h1>
+    <p class="muted">Сумма и срок поставки на дату проверки — с цитатой из источника. Условия меняет только подписанное допсоглашение, вступившее в силу. Обработка идёт в браузере, файлы никуда не отправляются.</p>
+  </header>
+
+  <main class="layout">
+    <div class="col-main">
+      <section class="card" id="upload">
+        <div class="controls">
+          <label class="field">Дата проверки
+            <input type="date" id="checkDate" value="2026-03-10">
+          </label>
+          <label class="btn primary">Загрузить TXT…
+            <input type="file" id="fileInput" accept=".txt,text/plain" multiple hidden>
+          </label>
+          <button class="btn" id="demoBtn" hidden>Демо-набор из задания</button>
+          <button class="btn ghost" id="clearBtn" disabled>Очистить</button>
+        </div>
+        <div class="drop" id="drop">или перетащите файлы сюда</div>
+      </section>
+
+      <section class="card" id="tableCard" hidden>
+        <h2>Договоры на <span id="dateLabel"></span></h2>
+        <div class="table-wrap"><table id="table">
+          <thead><tr>
+            <th>Договор</th><th>Поставщик</th><th>Сумма, ₽</th><th>Срок поставки</th><th>Не согласовано / проверить</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <div id="unlinked"></div>
+      </section>
+
+      <section class="card" id="askCard" hidden>
+        <h2>Вопросы</h2>
+        <div class="presets" id="presets"></div>
+        <div class="controls">
+          <label class="field">Договор <select id="qContract"></select></label>
+          <label class="field">Поле
+            <select id="qField">
+              <option value="delivery">Срок поставки</option>
+              <option value="amount">Сумма</option>
+            </select>
+          </label>
+          <button class="btn" id="qAsk">Показать</button>
+          <span class="sep"></span>
+          <label class="field">Поставка раньше <input type="date" id="qBefore" value="2026-04-01"></label>
+          <button class="btn" id="qBeforeBtn">Найти</button>
+        </div>
+        <div id="answer" class="answer" aria-live="polite"></div>
+      </section>
+
+      <section class="card" id="docsCard" hidden>
+        <h2>Загруженные документы</h2>
+        <ul id="docs" class="docs"></ul>
+      </section>
+    </div>
+
+    <aside class="col-side">
+      <section class="card sticky" id="viewer">
+        <h2 id="viewerTitle">Источник</h2>
+        <p class="muted" id="viewerHint">Нажмите на ссылку-основание, чтобы открыть абзац исходного документа.</p>
+        <ol id="viewerBody" class="source"></ol>
+      </section>
+    </aside>
+  </main>
+
+  <script src="src/extractor.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>

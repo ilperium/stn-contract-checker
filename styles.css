@@ -1,0 +1,72 @@
+:root {
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --text: #1c2430;
+  --muted: #5d6877;
+  --line: #e2e6ec;
+  --accent: #2357c6;
+  --ok: #1f7a46;
+  --warn-bg: #fff4d6;
+  --warn: #8a5a00;
+  --bad-bg: #fde8e8;
+  --bad: #a12626;
+  --mark: #ffe58a;
+  --chip: #eef2f8;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171c; --card: #1d2128; --text: #e6e9ee; --muted: #9aa4b2; --line: #2e343d;
+    --accent: #7ea6ff; --ok: #5fcf8e; --warn-bg: #3a3014; --warn: #f2c35b;
+    --bad-bg: #3d1f22; --bad: #ff8f8f; --mark: #6b5a12; --chip: #262c35;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 16px; margin: 0 0 12px; }
+.muted { color: var(--muted); margin: 0; }
+.top { padding: 20px 16px 8px; max-width: 1400px; margin: 0 auto; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); gap: 16px; padding: 8px 16px 32px; max-width: 1400px; margin: 0 auto; }
+@media (max-width: 1180px) { .layout { grid-template-columns: 1fr; } }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+.sticky { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+input[type=date], select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--text); }
+.btn { font: inherit; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--line); background: var(--chip); color: var(--text); cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.ghost { background: transparent; }
+.btn:disabled { opacity: .5; cursor: default; }
+.sep { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
+.drop { margin-top: 12px; border: 2px dashed var(--line); border-radius: 8px; padding: 14px; text-align: center; color: var(--muted); }
+.drop.over { border-color: var(--accent); color: var(--accent); }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; vertical-align: top; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); font-weight: 600; }
+.val { font-weight: 600; font-variant-numeric: tabular-nums; }
+.none { color: var(--muted); font-weight: 600; }
+.small { font-size: 13px; color: var(--muted); }
+.cite { font: inherit; font-size: 12px; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; text-align: left; }
+.badge { display: inline-block; font-size: 12px; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
+.badge.warn { background: var(--warn-bg); color: var(--warn); }
+.badge.bad { background: var(--bad-bg); color: var(--bad); }
+.badge.ok { background: var(--chip); color: var(--ok); }
+.badge.info { background: var(--chip); color: var(--muted); }
+.item { margin: 0 0 8px; }
+.item:last-child { margin-bottom: 0; }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.presets .btn { text-align: left; font-size: 14px; }
+.answer { margin-top: 14px; }
+.answer:empty { display: none; }
+.answer .block { border-left: 3px solid var(--accent); padding: 8px 12px; background: var(--chip); border-radius: 0 6px 6px 0; margin-bottom: 10px; }
+.answer .lead { font-size: 16px; margin: 0 0 6px; }
+.docs { list-style: none; margin: 0; padding: 0; }
+.docs li { padding: 8px 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.docs li:last-child { border-bottom: 0; }
+.source { padding-left: 34px; margin: 0; }
+.source li { padding: 4px 6px; border-radius: 4px; margin-bottom: 2px; }
+.source li::marker { color: var(--muted); font-size: 12px; }
+.source li.active { outline: 2px solid var(--accent); }
+mark { background: var(--mark); color: inherit; padding: 0 1px; }
+.q { font-style: italic; }

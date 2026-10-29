@@ -72,12 +72,15 @@
 
   // ---------- извлечение полей из одного документа ----------
 
+  // ignored — суммы, похожие на стоимость, но отброшенные правилом (аванс, лимит): показываем для прозрачности.
   function extractAmounts(doc) {
     const out = [];
+    doc.amountsIgnored = [];
     for (const { p, quote } of sentences(doc)) {
-      if (!/стоимост/i.test(quote) || NOT_TOTAL.test(quote)) continue;
       const m = MONEY.exec(quote);
       if (!m) continue;
+      if (NOT_TOTAL.test(quote)) { doc.amountsIgnored.push({ p, quote }); continue; }
+      if (!/стоимост/i.test(quote)) continue;
       const value = Number(m[1].replace(/\D/g, '')) + (m[2] ? Number(m[2].padEnd(2, '0')) / 100 : 0);
       out.push({ value, p, quote });
     }
@@ -97,14 +100,16 @@
   function extractDeliveries(doc) {
     const found = [];
     const unclear = [];
+    const ignored = [];
     for (const { p, quote } of sentences(doc)) {
+      if (NOT_DELIVERY.test(quote) && isoDates(quote).length) { ignored.push({ p, quote }); continue; }
       if (!DELIVERY_WORD.test(quote) || NOT_DELIVERY.test(quote)) continue;
       if (/^(Дата|Статус)\b/i.test(quote)) continue;
       const iso = pickDate(quote);
       if (iso) found.push({ value: iso, p, quote });
       else if (isoDates(quote).length || /срок|не позднее|в течение/i.test(quote)) unclear.push({ p, quote });
     }
-    return { found, unclear };
+    return { found, unclear, ignored };
   }
 
   function extractParty(doc, labels) {
@@ -285,6 +290,7 @@
 
       const amount = baseField(contract, contract.amounts, 'Сумма в тексте договора не найдена');
       applyAmendments(amount, applied, (d) => d.amounts);
+      amount.ignored = contract.amountsIgnored.map((c) => src(contract, c));
 
       const delivery = baseField(contract, contract.deliveries.found, 'Срок поставки в тексте договора не найден');
       if (delivery.status === 'missing' && contract.deliveries.unclear.length) {
@@ -293,6 +299,7 @@
         delivery.candidates = contract.deliveries.unclear.map((c) => ({ value: null, source: src(contract, c) }));
       }
       applyAmendments(delivery, applied, (d) => d.deliveries.found);
+      delivery.ignored = contract.deliveries.ignored.map((c) => src(contract, c));
 
       // Предложения и документы, которые нельзя применить автоматически.
       const proposals = [];
