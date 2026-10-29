@@ -1,0 +1,11 @@
+{
+  "name": "stn-contract-checker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Прототип проверки условий договоров поставки",
+  "scripts": {
+    "test": "node --test",
+    "start": "python3 -m http.server 8000"
+  },
+  "license": "MIT"
+}
